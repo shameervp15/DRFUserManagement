@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
-from users.serializers import UserSerializer
+from users.serializers import UserProfileSerializer, UserSerializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -20,3 +20,10 @@ class LogOutView(APIView):
         refresh_token = request.data['refresh']
         RefreshToken(refresh_token).blacklist()
         return Response({'message': 'Logged out successfully!'}, status=status.HTTP_200_OK)
+
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user.profile
