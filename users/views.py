@@ -25,5 +25,8 @@ class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserProfileSerializer
 
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
     def get_object(self):
         return self.request.user.profile

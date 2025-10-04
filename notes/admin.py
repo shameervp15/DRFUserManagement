@@ -1,3 +1,6 @@
 from django.contrib import admin
+from notes.models import NotesModel
+from users.models import UserProfileModel
 
-# Register your models here.
+admin.site.register(NotesModel)
+admin.site.register(UserProfileModel)
