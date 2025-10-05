@@ -172,5 +172,6 @@ DJOSER = {
     # 4. Email Template Definition
     'EMAIL': {
         'password_reset': "djoser.email.PasswordResetEmail",
-    }
+    },
+    'TOKEN_MODEL': None,
 }

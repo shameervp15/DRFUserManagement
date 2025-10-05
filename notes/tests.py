@@ -8,8 +8,16 @@ from notes.models import NotesModel
 class NoteAPITest(APITestCase):
     
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password123')
-        self.client.login(username='testuser', password='password123')
+        self.username = 'testuser'
+        self.password = 'password123'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+        login_url = '/users/login/'
+        login_data = {'username': self.username, 'password': self.password}
+        response = self.client.post(login_url, login_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.access_token = response.data.get('access')
+        self.assertIsNotNone(self.access_token)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         self.note1 = NotesModel.objects.create(title="NotesModel 1", description="Test description1", user=self.user)
         self.note2 = NotesModel.objects.create(title="NotesModel 2", description="Test description2", user=self.user)
         self.list_url = reverse('notes')
