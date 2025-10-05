@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +42,8 @@ INSTALLED_APPS = [
     'users',
     'notes',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'notesmanager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['notesmanager\\templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,7 +133,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'notes.pagination.NotesPagination',
 }
 
 MEDIA_URL = '/media/'
@@ -140,3 +147,30 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 CORS_ALLOW_CREDENTIALS = True 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailersend.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'MS_4H1hKC@test-dnvo4d91n26g5r86.mlsender.net'
+EMAIL_HOST_PASSWORD = 'mssp.wCCUAxp.neqvygmd70zg0p7w.4WED5hj'
+DEFAULT_FROM_EMAIL = 'noreply@drfusermanagement.com'
+
+DJOSER = {
+    # 1. PATH: This defines the path structure Djoser appends to the base URL.
+    #    It MUST NOT include the protocol or domain here.
+    'PASSWORD_RESET_CONFIRM_URL': '/users/reset-password-confirm/{uid}/{token}',
+    
+    # 2. PROTOCOL: Tell Djoser to use 'https' or 'http' for the link.
+    'PROTOCOL': 'https', # Use 'https' for production (or 'http' for local testing)
+    
+    # 3. DOMAIN: The domain of your Vue.js frontend.
+    #    GET THIS FROM ENVIRONMENT VARIABLES for security and flexibility.
+    'DOMAIN': os.environ.get('FRONTEND_DOMAIN', 'localhost:8080'), # e.g., 'yourapp.netlify.app'
+
+    # 4. Email Template Definition
+    'EMAIL': {
+        'password_reset': "djoser.email.PasswordResetEmail",
+    }
+}
