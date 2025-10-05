@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v(6*&tre@wx_qmr5#g+d3k479#_zhm17y+=#w@^u=s+4w*(!a1'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -150,12 +150,12 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailersend.net'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'MS_4H1hKC@test-dnvo4d91n26g5r86.mlsender.net'
-EMAIL_HOST_PASSWORD = 'mssp.wCCUAxp.neqvygmd70zg0p7w.4WED5hj'
-DEFAULT_FROM_EMAIL = 'noreply@drfusermanagement.com'
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 DJOSER = {
     # 1. PATH: This defines the path structure Djoser appends to the base URL.
@@ -167,7 +167,7 @@ DJOSER = {
     
     # 3. DOMAIN: The domain of your Vue.js frontend.
     #    GET THIS FROM ENVIRONMENT VARIABLES for security and flexibility.
-    'DOMAIN': os.environ.get('FRONTEND_DOMAIN', 'localhost:8080'), # e.g., 'yourapp.netlify.app'
+    'DOMAIN': os.environ.get('FRONTEND_DOMAIN'),
 
     # 4. Email Template Definition
     'EMAIL': {
