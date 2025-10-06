@@ -42,6 +42,10 @@ class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return self.request.user.profile
 
+    def perform_destroy(self, instance):
+        user_instance = instance.user
+        user_instance.delete()
+
 class PasswordResetRequestView(APIView):
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)

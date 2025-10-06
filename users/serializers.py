@@ -1,3 +1,4 @@
+from wsgiref import validate
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.utils.http import urlsafe_base64_decode
@@ -26,6 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        if User.objects.filter(email=validated_data['email']).exists():
+            raise serializers.ValidationError({"email": "A user with this email address already exists."})
         user = User.objects.create_user(**validated_data)
         UserProfileModel.objects.create(user=user)
         return user
