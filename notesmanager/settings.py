@@ -148,8 +148,10 @@ REST_FRAMEWORK = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+FRONTEND_DOMAIN = os.environ.get("FRONTEND_DOMAIN")
+
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [os.environ.get("FRONTEND_DOMAIN")]
+CORS_ALLOWED_ORIGINS = [FRONTEND_DOMAIN]
 CORS_ALLOW_CREDENTIALS = True 
 
 
@@ -171,7 +173,7 @@ DJOSER = {
     
     # 3. DOMAIN: The domain of your Vue.js frontend.
     #    GET THIS FROM ENVIRONMENT VARIABLES for security and flexibility.
-    'DOMAIN': os.environ.get('FRONTEND_DOMAIN'),
+    'DOMAIN': FRONTEND_DOMAIN,
 
     # 4. Email Template Definition
     'EMAIL': {
